@@ -44,6 +44,13 @@ docker run --rm -it -p 7860:7860 -e LLM_API_KEY="$(cat api_key)" ai-tutor:v1
 
 Then open <http://localhost:7860>.
 
+Or, to use the published image:
+
+```bash
+./start_ai_tutor_locally.sh  # start
+./stop_ai_tutor.sh           # stop, from another terminal
+```
+
 ## Deploy on SciLifeLab Serve
 
 1. Push to `main`. GitHub Actions publishes the image as
