@@ -20,20 +20,26 @@ a tutor: it asks guiding questions and gives hints instead of answers.
 
 The app is configured with environment variables:
 
-| Variable       | Required | Default          | Meaning                                  |
-|----------------|----------|------------------|------------------------------------------|
-| `LLM_API_KEY`  | yes      |                  | API key of the LLM provider              |
-| `LLM_BASE_URL` | no       | OpenAI API       | Base URL of any OpenAI-compatible API    |
-| `LLM_MODEL`    | no       | `gpt-4o-mini`    | Model name                               |
-| `TUTOR_PROMPT` | no       | see `app.py`     | Replaces the default tutor system prompt |
+| Variable       | Required | Default            | Meaning                                  |
+|----------------|----------|--------------------|------------------------------------------|
+| `LLM_API_KEY`  | yes      |                    | API key of the LLM provider              |
+| `LLM_BASE_URL` | no       | Google Gemini API  | Base URL of any OpenAI-compatible API    |
+| `LLM_MODEL`    | no       | `gemini-3.7-flash` | Model name                               |
+| `TUTOR_PROMPT` | no       | see `app.py`       | Replaces the default tutor system prompt |
+
+By default the app uses Google Gemini, so you only need a Gemini API key
+(create one in [Google AI Studio](https://aistudio.google.com/apikey)).
+To use another provider, such as OpenAI, set `LLM_BASE_URL` and `LLM_MODEL` too.
 
 **Never commit the API key**: the code of apps on Serve must be public.
 
 ## Run locally
 
+Put your API key in a file called `api_key` (it is in `.gitignore`), then:
+
 ```bash
 docker build --platform linux/amd64 -t ai-tutor:v1 .
-docker run --rm -it -p 7860:7860 -e LLM_API_KEY=your-key ai-tutor:v1
+docker run --rm -it -p 7860:7860 -e LLM_API_KEY="$(cat api_key)" ai-tutor:v1
 ```
 
 Then open <http://localhost:7860>.
