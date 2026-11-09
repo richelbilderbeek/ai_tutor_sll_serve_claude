@@ -4,10 +4,11 @@ A Gradio chat app that sends every conversation to an LLM together with a
 system prompt that turns the LLM into a tutor.
 
 Configuration (environment variables):
-- LLM_API_KEY:   API key for the LLM provider (required, never commit it)
+- LLM_API_KEY:   API key for the LLM provider (required, never commit it).
+                 By default, this is a Google Gemini key from Google AI Studio.
 - LLM_BASE_URL:  base URL of an OpenAI-compatible API (optional,
-                 defaults to the OpenAI API)
-- LLM_MODEL:     model name (optional, default: gpt-4o-mini)
+                 default: Google Gemini's OpenAI-compatible endpoint)
+- LLM_MODEL:     model name (optional, default: gemini-3.7-flash)
 - TUTOR_PROMPT:  overrides the default tutor system prompt (optional)
 
 Chat history lives only in the browser session: nothing is stored or logged,
@@ -29,7 +30,10 @@ Your goal is to help the student learn, not to do their work for them.
 - If the student shares personal or sensitive information, remind them not to."""
 
 TUTOR_PROMPT = os.environ.get("TUTOR_PROMPT", DEFAULT_TUTOR_PROMPT)
-MODEL = os.environ.get("LLM_MODEL", "gpt-4o-mini")
+BASE_URL = os.environ.get(
+    "LLM_BASE_URL", "https://generativelanguage.googleapis.com/v1beta/openai/"
+)
+MODEL = os.environ.get("LLM_MODEL", "gemini-3.7-flash")
 PORT = int(os.environ.get("PORT", "7860"))
 
 
@@ -38,7 +42,7 @@ def make_client():
     api_key = os.environ.get("LLM_API_KEY")
     if not api_key:
         return None
-    return OpenAI(api_key=api_key, base_url=os.environ.get("LLM_BASE_URL") or None)
+    return OpenAI(api_key=api_key, base_url=BASE_URL)
 
 
 client = make_client()
